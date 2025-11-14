@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Add Product</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .result {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 4px;
+      }
+      .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Admin - Add New Product</h1>
+    <form id="productForm">
+      <div class="form-group">
+        <label for="name">Product Name:</label>
+        <input type="text" id="name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="number" id="price" step="0.01" required />
+      </div>
+
+      <div class="form-group">
+        <label for="discount">Discount (%):</label>
+        <input type="number" id="discount" step="0.01" />
+      </div>
+
+      <div class="form-group">
+        <label for="quantityAvailable">Quantity Available:</label>
+        <input type="number" id="quantityAvailable" required />
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category:</label>
+        <input type="text" id="category" required />
+      </div>
+
+      <div class="form-group">
+        <label for="currentPrice">Current Price:</label>
+        <input type="number" id="currentPrice" step="0.01" required />
+      </div>
+
+      <div class="form-group">
+        <label for="sizes">Sizes (comma separated):</label>
+        <input type="text" id="sizes" placeholder="Small, Medium, Large" />
+      </div>
+
+      <div class="form-group">
+        <label for="colors">Colors (comma separated):</label>
+        <input type="text" id="colors" placeholder="Red, Blue, Green" />
+      </div>
+
+      <div class="form-group">
+        <label for="images">Image URLs (comma separated):</label>
+        <textarea
+          id="images"
+          rows="3"
+          placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
+        ></textarea>
+      </div>
+
+      <button type="submit">Add Product</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("productForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          // Get form values
+          const name = document.getElementById("name").value;
+          const price = parseFloat(document.getElementById("price").value);
+          const discount = document.getElementById("discount").value
+            ? parseFloat(document.getElementById("discount").value)
+            : undefined;
+          const quantityAvailable = parseInt(
+            document.getElementById("quantityAvailable").value
+          );
+          const category = document.getElementById("category").value;
+          const currentPrice = parseFloat(
+            document.getElementById("currentPrice").value
+          );
+          const sizes = document.getElementById("sizes").value
+            ? document
+                .getElementById("sizes")
+                .value.split(",")
+                .map((s) => s.trim())
+            : [];
+          const colors = document.getElementById("colors").value
+            ? document
+                .getElementById("colors")
+                .value.split(",")
+                .map((c) => c.trim())
+            : [];
+          const images = document.getElementById("images").value
+            ? document
+                .getElementById("images")
+                .value.split(",")
+                .map((i) => i.trim())
+            : [];
+
+          // Create product object
+          const product = {
+            name,
+            price,
+            quantityAvailable,
+            category,
+            currentPrice,
+            sizes,
+            colors,
+            images,
+            punctuation: {
+              countOpinions: 0,
+              punctuation: 0,
+              votes: [],
+            },
+            reviews: [],
+          };
+
+          // Add discount if provided
+          if (discount !== undefined) {
+            product.discount = discount;
+          }
+
+          try {
+            const response = await fetch("/api/products", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(product),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              document.getElementById("result").innerHTML =
+                `<div class="result success">Product added successfully!<br>ID: ${result.product._id}</div>`;
+              document.getElementById("productForm").reset();
+            } else {
+              document.getElementById("result").innerHTML =
+                `<div class="result error">Error: ${result.message}</div>`;
+            }
+          } catch (error) {
+            document.getElementById("result").innerHTML =
+              `<div class="result error">Error: ${error.message}</div>`;
+          }
+        });
+    </script>
+  </body>
+</html>
