@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 
 import type { RootState } from "@/store";
+import type { ProductStoreType } from "@/types";
 
 import CheckoutStatus from "../checkout-status";
 import Item from "./item";
@@ -12,7 +13,7 @@ const ShoppingCart = () => {
   const priceTotal = () => {
     let totalPrice = 0;
     if (cartItems.length > 0) {
-      cartItems.map((item) => (totalPrice += item.price * item.count));
+      cartItems.map((item) => (totalPrice += item.price * (item.count || 0)));
     }
 
     return totalPrice;
@@ -40,16 +41,7 @@ const ShoppingCart = () => {
                 </tr>
 
                 {cartItems.map((item) => (
-                  <Item
-                    key={item.id}
-                    id={item.id}
-                    thumb={item.thumb}
-                    name={item.name}
-                    color={item.color}
-                    price={item.price}
-                    size={item.size}
-                    count={item.count}
-                  />
+                  <Item key={item.id} {...item} />
                 ))}
               </tbody>
             </table>

@@ -28,14 +28,14 @@ const Content = ({ product }: ProductContent) => {
   const { favProducts } = useSelector((state: RootState) => state.user);
   const isFavourite = some(
     favProducts,
-    (productId) => productId === product.id,
+    (productId) => productId === product.id
   );
 
   const toggleFav = () => {
     dispatch(
       toggleFavProduct({
         id: product.id,
-      }),
+      })
     );
   };
 
@@ -48,6 +48,14 @@ const Content = ({ product }: ProductContent) => {
       count,
       color,
       size: itemSize,
+      quantityAvailable: product.quantityAvailable,
+      category: product.category,
+      currentPrice: product.currentPrice,
+      images: product.images,
+      colors: product.colors,
+      sizes: product.sizes,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
     };
 
     const productStore = {

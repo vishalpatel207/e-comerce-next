@@ -13,14 +13,14 @@ const ProductItem = ({
   name,
   price,
   currentPrice,
-  // colors,
-  // sizes,
-  // category,
-  // quantityAvailable,
-  // punctuation,
-  // reviews,
-  // createdAt,
-  // updatedAt,
+  colors,
+  sizes,
+  category,
+  quantityAvailable,
+  punctuation,
+  reviews,
+  createdAt,
+  updatedAt,
 }: ProductTypeList) => {
   const dispatch = useDispatch();
   const { favProducts } = useSelector((state: RootState) => state.user);

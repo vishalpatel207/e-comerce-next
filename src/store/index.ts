@@ -17,16 +17,14 @@ const rootReducer = combineReducers({
   user: userReducer,
 });
 
-let store = configureStore({
-  reducer,
-});
-
-const makeStore = ({ isServer }: { isServer: boolean }) => {
+const makeStore = (context: any) => {
+  const isServer = typeof window === 'undefined';
+  
   if (isServer) {
     //If it's on server side, create a store
-    return (store = configureStore({
+    return configureStore({
       reducer,
-    }));
+    });
   } else {
     //If it's on client side, create a store which will persist
     const persistConfig = {
@@ -37,11 +35,10 @@ const makeStore = ({ isServer }: { isServer: boolean }) => {
 
     const persistedReducer = persistReducer(persistConfig, rootReducer); // Create a new reducer with our existing reducer
 
-    store = configureStore({
+    const store: any = configureStore({
       reducer: persistedReducer,
     }); // Creating the store again
 
-    // @ts-ignore:next-line
     store.__persistor = persistStore(store); // This creates a persistor object & push that persisted object to .__persistor, so that we can avail the persistability feature
 
     return store;
@@ -49,11 +46,10 @@ const makeStore = ({ isServer }: { isServer: boolean }) => {
 };
 
 // export an assembled wrapper
-// @ts-ignore:next-line
-export const wrapper = createWrapper(makeStore, { debug: true });
+export const wrapper = createWrapper(makeStore, { debug: false });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = ReturnType<typeof makeStore>["dispatch"];

@@ -30,29 +30,32 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, action: PayloadAction<AddProductType>) => {
-      const cartItems = state.cartItems;
-
       // find index of product
       const index = indexSameProduct(state, action.payload.product);
 
       if (index !== -1) {
-        cartItems[index].count += action.payload.count;
-        return;
+        state.cartItems[index].count = (state.cartItems[index].count || 0) + action.payload.count;
+      } else {
+        const newProduct = {
+          ...action.payload.product,
+          count: action.payload.count
+        };
+        state.cartItems.push(newProduct);
       }
-
-      return {
-        ...state,
-        cartItems: [...state.cartItems, action.payload.product],
-      };
     },
     removeProduct(state, action: PayloadAction<ProductStoreType>) {
       // find index of product
-      state.cartItems.splice(indexSameProduct(state, action.payload), 1);
+      const index = indexSameProduct(state, action.payload);
+      if (index !== -1) {
+        state.cartItems.splice(index, 1);
+      }
     },
     setCount(state, action: PayloadAction<AddProductType>) {
       // find index and add new count on product count
       const indexItem = indexSameProduct(state, action.payload.product);
-      state.cartItems[indexItem].count = action.payload.count;
+      if (indexItem !== -1) {
+        state.cartItems[indexItem].count = action.payload.count;
+      }
     },
   },
 });

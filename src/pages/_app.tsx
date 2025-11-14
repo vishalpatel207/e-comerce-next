@@ -27,15 +27,17 @@ const poppins = Poppins({
   variable: "--main-font",
 });
 
-const MyApp = ({ Component, pageProps }: AppProps) => (
-  <Fragment>
-    <style jsx global>{`
-      :root {
-        --main-font: ${poppins.style.fontFamily};
-      }
-    `}</style>
-    <Component {...pageProps} />
-  </Fragment>
-);
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <Fragment>
+      <style jsx global>{`
+        :root {
+          --main-font: ${poppins.style.fontFamily};
+        }
+      `}</style>
+      <Component {...pageProps} />
+    </Fragment>
+  );
+}
 
 export default wrapper.withRedux(MyApp);

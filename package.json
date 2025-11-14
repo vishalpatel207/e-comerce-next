@@ -28,7 +28,7 @@
     "rc-slider": "^9.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^6.8.2",
+    "react-hook-form": "^7.66.0",
     "react-rater": "^5.1.1",
     "react-redux": "^7.2.1",
     "react-select": "^3.1.0",
@@ -61,8 +61,6 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.1.4",
-    "fslightbox-react": "^1.5.0",
-    "node-fetch": "^3.3.2",
     "prettier": "^3.4.1",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.16.0"

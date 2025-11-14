@@ -3,21 +3,8 @@ import { connectDB } from "@/utils/db";
 import Product from "@/models/Product";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Get all products
-  if (req.method === "GET") {
-    try {
-      await connectDB();
-      
-      const products = await Product.find({});
-      
-      res.status(200).json(products);
-    } catch (error: any) {
-      console.error("Error fetching products:", error);
-      res.status(500).json({ message: "Error fetching products", error: error.message });
-    }
-  }
-  // Create a new product
-  else if (req.method === "POST") {
+  // Only handle POST requests for creating a new product
+  if (req.method === "POST") {
     try {
       await connectDB();
       

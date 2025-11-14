@@ -1,12 +1,15 @@
-import SwiperCore, { EffectFade, Navigation } from "swiper";
+import { EffectFade, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const PageIntro = () => {
-  SwiperCore.use([EffectFade, Navigation]);
-
   return (
     <section className="page-intro">
-      <Swiper navigation effect="fade" className="swiper-wrapper">
+      <Swiper
+        navigation
+        effect="fade"
+        modules={[EffectFade, Navigation]}
+        className="swiper-wrapper"
+      >
         <SwiperSlide>
           <div
             className="page-intro__slide"

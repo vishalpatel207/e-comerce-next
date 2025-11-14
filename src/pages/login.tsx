@@ -12,7 +12,12 @@ type LoginMail = {
 };
 
 const LoginPage = () => {
-  const { register, handleSubmit, setError, errors } = useForm<LoginMail>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<LoginMail>();
   const router = useRouter();
 
   const onSubmit = async (data: LoginMail) => {
@@ -75,8 +80,7 @@ const LoginPage = () => {
                   className="form__input"
                   placeholder="email"
                   type="text"
-                  name="email"
-                  ref={register({
+                  {...register("email", {
                     required: "Email is required",
                     pattern: {
                       value:
@@ -98,8 +102,9 @@ const LoginPage = () => {
                   className="form__input"
                   type="password"
                   placeholder="Password"
-                  name="password"
-                  ref={register({ required: "Password is required" })}
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
                 />
                 {errors.password && (
                   <p className="message message--error">
@@ -116,9 +121,8 @@ const LoginPage = () => {
                   >
                     <input
                       type="checkbox"
-                      name="keepSigned"
                       id="check-signed-in"
-                      ref={register}
+                      {...register("keepSigned")}
                     />
                     <span className="checkbox__check" />
                     <p>Keep me signed in</p>

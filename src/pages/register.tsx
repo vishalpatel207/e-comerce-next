@@ -14,7 +14,12 @@ type RegisterData = {
 };
 
 const RegisterPage = () => {
-  const { register, handleSubmit, setError, errors } = useForm<RegisterData>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<RegisterData>();
   const router = useRouter();
 
   const onSubmit = async (data: RegisterData) => {
@@ -81,8 +86,9 @@ const RegisterPage = () => {
                   className="form__input"
                   placeholder="First Name"
                   type="text"
-                  name="firstName"
-                  ref={register({ required: "First name is required" })}
+                  {...register("firstName", {
+                    required: "First name is required",
+                  })}
                 />
                 {errors.firstName && (
                   <p className="message message--error">
@@ -96,8 +102,9 @@ const RegisterPage = () => {
                   className="form__input"
                   placeholder="Last Name"
                   type="text"
-                  name="lastName"
-                  ref={register({ required: "Last name is required" })}
+                  {...register("lastName", {
+                    required: "Last name is required",
+                  })}
                 />
                 {errors.lastName && (
                   <p className="message message--error">
@@ -111,8 +118,7 @@ const RegisterPage = () => {
                   className="form__input"
                   placeholder="Email"
                   type="text"
-                  name="email"
-                  ref={register({
+                  {...register("email", {
                     required: "Email is required",
                     pattern: {
                       value:
@@ -133,8 +139,7 @@ const RegisterPage = () => {
                   className="form__input"
                   type="Password"
                   placeholder="Password"
-                  name="password"
-                  ref={register({
+                  {...register("password", {
                     required: "Password is required",
                     minLength: {
                       value: 6,
@@ -156,10 +161,9 @@ const RegisterPage = () => {
                     className="checkbox checkbox--sm"
                   >
                     <input
-                      name="signed-in"
                       type="checkbox"
                       id="check-signed-in"
-                      ref={register}
+                      {...register("signedIn")}
                     />
                     <span className="checkbox__check" />
                     <p>

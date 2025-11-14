@@ -11,39 +11,34 @@ const ShoppingCart = ({
   size,
   count,
   price,
+  ...rest
 }: ProductStoreType) => {
   const dispatch = useDispatch();
 
   const removeFromCart = () => {
     dispatch(
       removeProduct({
-        thumb,
-        name,
         id,
         color,
         size,
-        count,
-        price,
-      }),
+        ...rest,
+      } as ProductStoreType)
     );
   };
 
-  const setProductCount = (count: number) => {
-    if (count <= 0) {
+  const setProductCount = (newCount: number) => {
+    if (newCount <= 0) {
       return;
     }
 
     const payload = {
       product: {
-        thumb,
-        name,
         id,
         color,
         size,
-        count,
-        price,
-      },
-      count,
+        ...rest,
+      } as ProductStoreType,
+      count: newCount,
     };
 
     dispatch(setCount(payload));
@@ -73,15 +68,15 @@ const ShoppingCart = ({
         <div className="quantity-button">
           <button
             type="button"
-            onClick={() => setProductCount(count - 1)}
+            onClick={() => setProductCount((count || 0) - 1)}
             className="quantity-button__btn"
           >
             -
           </button>
-          <span>{count}</span>
+          <span>{count || 0}</span>
           <button
             type="button"
-            onClick={() => setProductCount(count + 1)}
+            onClick={() => setProductCount((count || 0) + 1)}
             className="quantity-button__btn"
           >
             +

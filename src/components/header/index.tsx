@@ -96,11 +96,13 @@ const Header = ({ isErrorPage }: HeaderType) => {
   return (
     <header className={`site-header ${!onTop ? "site-header--fixed" : ""}`}>
       <div className="container">
-        <Link href="/">
-          <h1 className="site-logo">
-            <Logo />
-            E-Shop
-          </h1>
+        <Link href="/" legacyBehavior>
+          <a className="site-logo-link">
+            <h1 className="site-logo">
+              <Logo />
+              E-Shop
+            </h1>
+          </a>
         </Link>
         <nav
           ref={navRef}
@@ -109,9 +111,8 @@ const Header = ({ isErrorPage }: HeaderType) => {
           <Link href="/products">Products</Link>
           <a href="#">Inspiration</a>
           <a href="#">Rooms</a>
-          {user ? (
+          {user && (
             <div className="site-nav__user">
-              <p>Welcome, {user.firstName}</p>
               <Link href="/profile">
                 <button className="site-nav__btn">Profile</button>
               </Link>
@@ -119,10 +120,6 @@ const Header = ({ isErrorPage }: HeaderType) => {
                 Logout
               </button>
             </div>
-          ) : (
-            <button className="site-nav__btn">
-              <p>Account</p>
-            </button>
           )}
         </nav>
 
@@ -157,12 +154,12 @@ const Header = ({ isErrorPage }: HeaderType) => {
           </Link>
           {user ? (
             <div className="site-header__user">
-              <span>Hello, {user.firstName}</span>
               <Link href="/profile">
                 <button className="site-header__btn-avatar">
                   <i className="icon-avatar" />
                 </button>
               </Link>
+              <span>Hello, {user.firstName}</span>
             </div>
           ) : (
             <Link href="/login" legacyBehavior>

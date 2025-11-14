@@ -65,6 +65,11 @@ export type ProductStoreType = {
   sizes: string[];
   createdAt: Date;
   updatedAt: Date;
+  // Additional properties for cart items
+  thumb?: string;
+  color?: string;
+  size?: string;
+  count?: number;
 };
 
 export type GtagEventType = {
